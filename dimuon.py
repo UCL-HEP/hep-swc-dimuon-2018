@@ -28,6 +28,20 @@ def hist_lep_pt(data):
             hist.Fill(pt*0.001)      # Convert pT from MeV to GeV
     return hist
 
+def hist_mu_pt(data):
+    '''
+    Creates a histogram of muon pT in the data.
+    '''
+    hist = TH1F("mu_pt","Muon pT",100,0,200)
+    for i_event in range(1000):
+        data.GetEntry(i_event)
+        lep_n = data.lep_n
+        for i_lep in range(lep_n):
+            if data.lep_type[i_lep] == 13: # Muon
+                pt = data.lep_pt[i_lep]
+                hist.Fill(pt*0.001)        # Convert pT from MeV to GeV
+    return hist
+
 def hist_dimuon_mass(data):
     hist = TH1F("mass","Dimuon mass",100,0,200)
     for i_event in range(1000):
@@ -47,6 +61,11 @@ if __name__ == '__main__':
 
     hLepPt = hist_lep_pt(data)
     hLepPt.Draw()
+
+    raw_input("Press enter to see next histogram.")
+
+    hMuPt = hist_mu_pt(data)
+    hMuPt.Draw()
 
     raw_input("Press enter to see next histogram.")
 
