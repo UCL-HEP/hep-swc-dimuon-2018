@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from ROOT import TFile, TH1F
 
 def tree_from_file(filename):
