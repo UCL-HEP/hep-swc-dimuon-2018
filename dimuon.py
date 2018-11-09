@@ -14,19 +14,19 @@ def tree_from_file(filename):
     data  = fData.Get("mini")
     return data
 
-def hist_lep_n(data):
+def hist_lep_n(data, n_events):
     hNumLeptons = TH1F("lep_n","Number of leptons",6,-0.5,5.5)
-    for i_event in range(1000):
+    for i_event in range(n_events):
         data.GetEntry(i_event)
         hNumLeptons.Fill(data.lep_n)
     return hNumLeptons
 
-def hist_lep_pt(data):
+def hist_lep_pt(data, n_events):
     '''
     Creates a histogram of lepton pT in the data.
     '''
     hist = TH1F("lep_pt","Lepton pT",100,0,200)
-    for i_event in range(1000):
+    for i_event in range(n_events):
         data.GetEntry(i_event)
         lep_n = data.lep_n
         for i_lep in range(lep_n):
@@ -34,12 +34,12 @@ def hist_lep_pt(data):
             hist.Fill(pt*0.001)      # Convert pT from MeV to GeV
     return hist
 
-def hist_mu_pt(data):
+def hist_mu_pt(data, n_events):
     '''
     Creates a histogram of muon pT in the data.
     '''
     hist = TH1F("mu_pt","Muon pT",100,0,200)
-    for i_event in range(1000):
+    for i_event in range(n_events):
         data.GetEntry(i_event)
         lep_n = data.lep_n
         for i_lep in range(lep_n):
@@ -48,9 +48,9 @@ def hist_mu_pt(data):
                 hist.Fill(pt*0.001)        # Convert pT from MeV to GeV
     return hist
 
-def hist_dimuon_mass(data):
+def hist_dimuon_mass(data, n_events):
     hist = TH1F("mass","Dimuon mass",100,0,200)
-    for i_event in range(1000):
+    for i_event in range(n_events):
         data.GetEntry(i_event)
         muons = find_muons(data)
         pairs = find_pairs(muons)
@@ -95,12 +95,12 @@ def find_pairs(particles):
             pairs.append(pair)
     return pairs
 
-def fill_histograms(data):
+def fill_histograms(data, n_events):
     histograms = []
-    histograms.append(hist_lep_n(data))
-    histograms.append(hist_lep_pt(data))
-    histograms.append(hist_mu_pt(data))
-    histograms.append(hist_dimuon_mass(data))
+    histograms.append(hist_lep_n(data, n_events))
+    histograms.append(hist_lep_pt(data, n_events))
+    histograms.append(hist_mu_pt(data, n_events))
+    histograms.append(hist_dimuon_mass(data, n_events))
     return histograms
 
 
@@ -114,8 +114,18 @@ if __name__ == '__main__':
 
     nEvents = data.GetEntries()
     print("Number of events = "+str(nEvents))
+    if len(sys.argv) >= 3:
+        nEventsToProcess = int(sys.argv[2])
+        if nEventsToProcess > nEvents:
+            nEventsToProcess = nEvents
+            print("Data only contains "+str(nEvents)+" events, processing all events")
+        else:
+            print("Number of events to process specified on command line: "+str(nEventsToProcess))
+    else:
+        nEventsToProcess = nEvents
+        print("No number of events provided. Processing all events.")
 
-    histograms = fill_histograms(data)
+    histograms = fill_histograms(data, nEventsToProcess)
     for histogram in histograms:
         histogram.Draw()
         raw_input("Press enter to see next histogram")
