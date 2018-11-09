@@ -16,3 +16,10 @@ def test_two_like_sign():
     particles = [p1,p2]
     pairs = find_pairs(particles)
     assert len(pairs) == 0
+
+def test_two_unlike_sign():
+    p1 = Particle(None,1)
+    p2 = Particle(None,-1)
+    particles = [p1,p2]
+    pairs = find_pairs(particles)
+    assert len(pairs) == 1

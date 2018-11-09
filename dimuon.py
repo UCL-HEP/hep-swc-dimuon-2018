@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 
-from ROOT import TFile, TH1F
+from ROOT import TFile, TH1F, TLorentzVector
 
 class Particle:
     def __init__(self,four_momentum,charge):
-        pass
+        self.four_momentum = four_momentum
+        self.q = charge
 
 def tree_from_file(filename):
     global fData
@@ -50,10 +51,40 @@ def hist_dimuon_mass(data):
     hist = TH1F("mass","Dimuon mass",100,0,200)
     for i_event in range(1000):
         data.GetEntry(i_event)
+        muons = find_muons(data)
+        pairs = find_pairs(muons)
     return hist
 
+def find_muons(data):
+    muons = []
+    for i_lep in range(data.lep_n):
+        if data.lep_type[i_lep] == 13:     # Muon
+            q = data.lep_charge[i_lep]
+            pt = data.lep_pt[i_lep]
+            eta = data.lep_eta[i_lep]
+            phi = data.lep_phi[i_lep]
+            E = data.lep_E[i_lep]
+            p4 = TLorentzVector()
+            p4.SetPtEtaPhiE(pt,eta,phi,E)
+            particle = Particle(p4,q)
+            muons.append(particle)
+    return muons
+
+
 def find_pairs(particles):
-    return []
+    pairs = []
+    pos   = []
+    neg   = []
+    for p in particles:
+        if p.q > 0:
+            pos.append(p)
+        elif p.q < 0:
+            neg.append(p)
+    for p1 in pos:
+        for p2 in neg:
+            pair = (p1,p2)
+            pairs.append(pair)
+    return pairs
 
 if __name__ == '__main__':
     data = tree_from_file("/home/waugh/dimuon/data/mc_105987.WZ.root")
