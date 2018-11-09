@@ -14,11 +14,11 @@ def hist_lep_n(data):
     return hNumLeptons
 
 data = tree_from_file("/home/waugh/dimuon/data/mc_105987.WZ.root")
-hNumLeptons = hist_lep_n(data)
 
 nEvents = data.GetEntries()
 print("Number of events = "+str(nEvents))
 
+hNumLeptons = hist_lep_n(data)
 hNumLeptons.Draw()
 
 raw_input("Press enter to exit.")
