@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 from ROOT import TFile, TH1F, TLorentzVector
+import sys
 
 class Particle:
     def __init__(self,four_momentum,charge):
@@ -95,7 +96,12 @@ def find_pairs(particles):
     return pairs
 
 if __name__ == '__main__':
-    data = tree_from_file("/home/waugh/dimuon/data/mc_105987.WZ.root")
+    if len(sys.argv) < 2:
+        print("Data file must be given as command-line argument, e.g.")
+        print("  dimuon.py data.root")
+        sys.exit(1)
+    filename = sys.argv[1]
+    data = tree_from_file(filename)
 
     nEvents = data.GetEntries()
     print("Number of events = "+str(nEvents))
