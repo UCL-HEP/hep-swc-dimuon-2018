@@ -95,6 +95,15 @@ def find_pairs(particles):
             pairs.append(pair)
     return pairs
 
+def fill_histograms(data):
+    histograms = []
+    histograms.append(hist_lep_n(data))
+    histograms.append(hist_lep_pt(data))
+    histograms.append(hist_mu_pt(data))
+    histograms.append(hist_dimuon_mass(data))
+    return histograms
+
+
 if __name__ == '__main__':
     if len(sys.argv) < 2:
         print("Data file must be given as command-line argument, e.g.")
@@ -106,22 +115,7 @@ if __name__ == '__main__':
     nEvents = data.GetEntries()
     print("Number of events = "+str(nEvents))
 
-    hNumLeptons = hist_lep_n(data)
-    hNumLeptons.Draw()
-
-    raw_input("Press enter to see next histogram.")
-
-    hLepPt = hist_lep_pt(data)
-    hLepPt.Draw()
-
-    raw_input("Press enter to see next histogram.")
-
-    hMuPt = hist_mu_pt(data)
-    hMuPt.Draw()
-
-    raw_input("Press enter to see next histogram.")
-
-    hDimuonMass = hist_dimuon_mass(data)
-    hDimuonMass.Draw()
-
-    raw_input("Press enter to exit.")
+    histograms = fill_histograms(data)
+    for histogram in histograms:
+        histogram.Draw()
+        raw_input("Press enter to see next histogram")
