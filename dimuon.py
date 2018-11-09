@@ -15,12 +15,13 @@ def hist_lep_n(data):
         hNumLeptons.Fill(data.lep_n)
     return hNumLeptons
 
-data = tree_from_file("/home/waugh/dimuon/data/mc_105987.WZ.root")
+if __name__ == '__main__':
+    data = tree_from_file("/home/waugh/dimuon/data/mc_105987.WZ.root")
 
-nEvents = data.GetEntries()
-print("Number of events = "+str(nEvents))
+    nEvents = data.GetEntries()
+    print("Number of events = "+str(nEvents))
 
-hNumLeptons = hist_lep_n(data)
-hNumLeptons.Draw()
+    hNumLeptons = hist_lep_n(data)
+    hNumLeptons.Draw()
 
-raw_input("Press enter to exit.")
+    raw_input("Press enter to exit.")
