@@ -2,6 +2,10 @@
 
 from ROOT import TFile, TH1F
 
+class Particle:
+    def __init__(self,four_momentum,charge):
+        pass
+
 def tree_from_file(filename):
     global fData
     fData = TFile(filename)
