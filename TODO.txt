@@ -1,0 +1,2 @@
+Make number of events to process a parameter of hist_lep_n.
+Plot dimuon mass distribution.
