@@ -15,6 +15,12 @@ def hist_lep_n(data):
         hNumLeptons.Fill(data.lep_n)
     return hNumLeptons
 
+def hist_dimuon_mass(data):
+    hist = TH1F("mass","Dimuon mass",100,0,200)
+    for i_event in range(1000):
+        data.GetEntry(i_event)
+    return hist
+
 if __name__ == '__main__':
     data = tree_from_file("/home/waugh/dimuon/data/mc_105987.WZ.root")
 
@@ -23,5 +29,10 @@ if __name__ == '__main__':
 
     hNumLeptons = hist_lep_n(data)
     hNumLeptons.Draw()
+
+    raw_input("Press enter to see next histogram.")
+
+    hDimuonMass = hist_dimuon_mass(data)
+    hDimuonMass.Draw()
 
     raw_input("Press enter to exit.")
