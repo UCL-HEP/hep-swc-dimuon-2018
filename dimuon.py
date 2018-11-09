@@ -53,6 +53,14 @@ def hist_dimuon_mass(data):
         data.GetEntry(i_event)
         muons = find_muons(data)
         pairs = find_pairs(muons)
+        for pair in pairs:
+            mu1 = pair[0]
+            mu2 = pair[1]
+            p1 = mu1.four_momentum
+            p2 = mu2.four_momentum
+            ppair = p1 + p2
+            mass = ppair.M()
+            hist.Fill(mass*0.001)           # Convert from MeV to GeV
     return hist
 
 def find_muons(data):
