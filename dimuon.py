@@ -1,7 +1,12 @@
 from ROOT import TFile, TH1F
 
-fData = TFile("/home/waugh/dimuon/data/mc_105987.WZ.root")
-data  = fData.Get("mini")
+def tree_from_file(filename):
+    fData = TFile(filename)
+    data  = fData.Get("mini")
+    return data
+
+data = tree_from_file("/home/waugh/dimuon/data/mc_105987.WZ.root")
+
 nEvents = data.GetEntries()
 print("Number of events = "+str(nEvents))
 
