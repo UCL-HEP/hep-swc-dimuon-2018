@@ -48,6 +48,9 @@ def hist_dimuon_mass(data):
         data.GetEntry(i_event)
     return hist
 
+def find_pairs(particles):
+    return []
+
 if __name__ == '__main__':
     data = tree_from_file("/home/waugh/dimuon/data/mc_105987.WZ.root")
 
