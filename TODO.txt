@@ -1,3 +1,3 @@
-Make number of events to process a parameter of hist_lep_n.
-Plot dimuon mass distribution.
+Make number of events to process a parameter of hist_lep_n etc.
 Refactor main program to reduce duplication
+Read data only once
